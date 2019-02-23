@@ -11,9 +11,14 @@ module Liblookup
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
+    # amount of time to wait before timing out for each API connection (in seconds)
+    config.x.network_time_out = 5
+
+    # key for SHERPA API - optional
+    # config.x.sherpa_api_key = "API_KEY_GOES_HERE"
+
+    # connection URL for sherpa romeo
+    config.x.sherpa_url = "http://www.sherpa.ac.uk/romeo/api29.php"
+
   end
 end

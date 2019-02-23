@@ -1,4 +1,23 @@
 <h2>liblookup</h2>
-Liblookup is a lookup service that searches for and retreives information from a variety of library-related APIs.
+Liblookup is a lookup service that searches for and retreives information from a variety of library-related APIs.<br/><br/>
+<%= form_tag('', method: "get") do %>
+  <%= label_tag(:idfield, "Search By ID's (ISSN, ISBN, DOI, ORCID, etc.):") %>
+  <%= text_field_tag("idfield", params[:idfield])%>
+  <%= submit_tag("ID Search") %>
+<% end %>
+<br/>
+<%= form_tag('', method: "get") do %>
+  <%= label_tag(:textfield, "Text Search (Authors, Titles, Keywords, etc.):") %>
+  <%= text_field_tag("textfield", params[:textfield])%>
+  <%= submit_tag("Text Search") %>
+<% end %>
+<br/><br/>
+
+<% if params[:idfield].present? %>
+  ID SEARCH FOR <%= params[:idfield] %>:<br/><br/>
+  <% @numhitsdata.each do |service, numhit| %>
+    <%= service %> returns <%= numhit %> hit<% if numhit != 1 %>s<% end %>
+  <% end %>
+<% end %>
 
 
