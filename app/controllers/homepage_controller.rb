@@ -1,7 +1,14 @@
 class HomepageController < ApplicationController
+
   def index
     if params[:idfield].present?
-      @numhitsdata = get_hits_for_id(params[:idfield])
+      if params[:download].blank?
+        @numhitsdata = get_hits_for_id(params[:idfield])
+      else
+        if params[:api]=='sherpa_issn'
+          @returndata = sherpa_issn_data_for(params[:idfield])
+        end
+      end
     end
   end
 
@@ -44,6 +51,18 @@ class HomepageController < ApplicationController
     else
       return data["romeoapi"]["journals"].size
     end
+  end
+
+  def sherpa_issn_data_for(id)
+    unless id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
+      # doesnt match format of ISSN - ignore
+      return nil
+    end
+    url = Rails.configuration.x.sherpa_url + '?issn=' + id
+    unless (Rails.configuration.x.sherpa_api_key.blank?)
+      url = url + "&ak=" + Rails.configuration.x.sherpa_api_key
+    end
+    return go_get(url)
   end
 
 end
