@@ -13,13 +13,13 @@ Liblookup is a lookup service that searches for and retreives information from a
 <% end %>
 <br/><br/>
 
-<% if params[:idfield].present? && params[:download].blank? && @numhitsdata.present? %>
-  ID SEARCH FOR <%= params[:idfield] %>:<br/><br/>
+<% if params[:idfield].present? && @numhitsdata.present? %>
+  ID SEARCH FOR <b><%= params[:idfield] %></b>:<br/><br/>
   <% @numhitsdata.each do |service, numhit| %>
     <%= service %> returns <%= numhit %> hit<% if numhit != 1 %>s<% end %>
-    <% if numhit > 0 %>
-      <%= link_to 'View Details', api: 'sherpa_issn', idfield: params[:idfield], download: false %>
-      <%= link_to 'Download', api: 'sherpa_issn', idfield: params[:idfield], download: true %>
+    <% if (numhit > 0) && (service=='Sherpa ISSN') %>
+      <%= link_to 'Details', api: 'sherpa_issn', idfield: params[:idfield] %>
+      <%= link_to 'Download XML', { controller: 'homepage', action: 'downloadaction', api: 'sherpa_issn', idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
   <% end %>
 <% end %>

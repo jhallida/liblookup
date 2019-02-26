@@ -1,68 +1,36 @@
 class HomepageController < ApplicationController
 
+  include Network
+  include Sherpa
+
   def index
     if params[:idfield].present?
-      if params[:download].blank?
+      if params[:api].blank?
+        # we are looking for number of hits only
         @numhitsdata = get_hits_for_id(params[:idfield])
       else
+        # we are returning data of some sort - figure out what it is and show it
         if params[:api]=='sherpa_issn'
-          @returndata = sherpa_issn_data_for(params[:idfield])
+          @returndata = sherpa_issn_json_for(params[:idfield])
         end
       end
     end
   end
 
+  def downloadaction
+    if params[:api]=='sherpa_issn'
+      xmldata = sherpa_issn_xml_for(params[:idfield])
+      send_data xmldata, :filename => "SHERPA-ROMEO-ISSN-data-for-" + params[:idfield] + '.xml'
+    end
+  end
+
   private
 
+  # check all applicable apis and return the number of hits for each one
   def get_hits_for_id(id)
     hits = Hash.new
     hits["Sherpa ISSN"] = sherpa_issn_hits_for(id)
     hits
-  end
-
-  def go_get(url)
-    begin
-      puts "Connecting to URL: " + url
-      response = HTTParty.get(url, timeout: Rails.configuration.x.network_time_out)
-      data = response.parsed_response
-    rescue Exception => e
-      puts "Connection ERROR: " + e.message
-      return nil
-    end
-    return data
-  end
-
-  def sherpa_issn_hits_for(id)
-    unless id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
-      # doesnt match format of ISSN - ignore
-      return 0
-    end
-    url = Rails.configuration.x.sherpa_url + '?issn=' + id
-    unless (Rails.configuration.x.sherpa_api_key.blank?)
-      url = url + "&ak=" + Rails.configuration.x.sherpa_api_key
-    end
-    data = go_get(url)
-    if data.nil?
-      return 0
-    end
-    if (data["romeoapi"]["journals"].nil?)
-      # bogus ISSN
-      return 0
-    else
-      return data["romeoapi"]["journals"].size
-    end
-  end
-
-  def sherpa_issn_data_for(id)
-    unless id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
-      # doesnt match format of ISSN - ignore
-      return nil
-    end
-    url = Rails.configuration.x.sherpa_url + '?issn=' + id
-    unless (Rails.configuration.x.sherpa_api_key.blank?)
-      url = url + "&ak=" + Rails.configuration.x.sherpa_api_key
-    end
-    return go_get(url)
   end
 
 end

@@ -4,4 +4,10 @@ Rails.application.routes.draw do
 
   get 'homepage/index'
 
+  resources :homepage do
+    collection do
+      get 'downloadaction'
+    end
+  end
+
 end
