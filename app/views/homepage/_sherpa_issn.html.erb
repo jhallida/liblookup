@@ -1,0 +1,10 @@
+<h3>SHERPA/ROMEO Lookup service for ISSN <%= params[:idfield] %></h3>
+<ul>
+  <li><b>LICENSE:</b> <%= @returndata[:sherpa_issn].dig("romeoapi","header","licence") %><br/></li>
+  <li><b>LICENSE URL:</b> <a href="<%= @returndata[:sherpa_issn].dig("romeoapi","header","licenceurl") %>"><%= @returndata[:sherpa_issn].dig("romeoapi","header","licenceurl") %></a></li>
+  <li><b>DISCLAIMER:</b> <%= @returndata[:sherpa_issn].dig("romeoapi","header","disclaimer") %><br/></li>
+  <li><b>VERSION:</b> <%= @returndata[:sherpa_issn].dig("romeoapi","version") %><br/></li>
+</ul>
+<br/>
+<%= @returndata[:sherpa_issn].dig("romeoapi","journals") %><br/><br/>
+<%= @returndata[:sherpa_issn].dig("romeoapi","publishers") %><br/><br/>

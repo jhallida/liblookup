@@ -25,6 +25,8 @@ Liblookup is a lookup service that searches for and retreives information from a
 <% end %>
 
 <% if @returndata.present? %>
-  <%= @returndata %>
+  <% if @returndata[:sherpa_issn].present? %>
+    <%= render "sherpa_issn" %>
+  <% end %>
 <% end %>
 

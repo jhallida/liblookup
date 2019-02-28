@@ -11,7 +11,7 @@ class HomepageController < ApplicationController
       else
         # we are returning data of some sort - figure out what it is and show it
         if params[:api]=='sherpa_issn'
-          @returndata = sherpa_issn_json_for(params[:idfield])
+          @returndata = {sherpa_issn: sherpa_issn_json_for(params[:idfield])}
         end
       end
     end
