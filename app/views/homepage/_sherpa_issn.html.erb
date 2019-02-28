@@ -4,7 +4,19 @@
   <li><b>LICENSE URL:</b> <a href="<%= @returndata[:sherpa_issn].dig("romeoapi","header","licenceurl") %>"><%= @returndata[:sherpa_issn].dig("romeoapi","header","licenceurl") %></a></li>
   <li><b>DISCLAIMER:</b> <%= @returndata[:sherpa_issn].dig("romeoapi","header","disclaimer") %><br/></li>
   <li><b>VERSION:</b> <%= @returndata[:sherpa_issn].dig("romeoapi","version") %><br/></li>
+  <% x = 0 %>
+  <% @returndata[:sherpa_issn].dig("romeoapi","journals").each do |journal| %>
+    <% x = x + 1 %>
+    <li><b>JOURNAL <%= x %>.</b>
+      <ul>
+        <% journal[1].each do |journalentry| %>
+          <li><b><%= journalentry[0] %>:</b> <%= journalentry[1] %></li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
 </ul>
-<br/>
-<%= @returndata[:sherpa_issn].dig("romeoapi","journals") %><br/><br/>
+
+<br/><br/>
 <%= @returndata[:sherpa_issn].dig("romeoapi","publishers") %><br/><br/>
+<%= @returndata[:sherpa_issn].dig("romeoapi") %><br/><br/>
