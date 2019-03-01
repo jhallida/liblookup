@@ -7,16 +7,55 @@
   <% x = 0 %>
   <% @returndata[:sherpa_issn].dig("romeoapi","journals").each do |journal| %>
     <% x = x + 1 %>
-    <li><b>JOURNAL <%= x %>.</b>
+    <li><b>JOURNAL <%= x %></b>
       <ul>
         <% journal[1].each do |journalentry| %>
-          <li><b><%= journalentry[0] %>:</b> <%= journalentry[1] %></li>
+          <li>
+            <b>
+              <% case journalentry[0] %>
+              <% when 'jtitle' %>
+                Title
+              <% when 'issn' %>
+                ISSN
+              <% when 'zetocpub' %>
+                Publisher Name (ZETOC)
+              <% when 'romeopub' %>
+                Publisher Name (ROMEO)
+              <% else %>
+                <%= journalentry[0] %>
+              <% end %>
+              :
+            </b>
+            <%= journalentry[1] %></li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+  <% x = 0 %>
+  <% @returndata[:sherpa_issn].dig("romeoapi","publishers").each do |publisher| %>
+    <% x = x + 1 %>
+    <li><b>PUBLISHER <%= x %></b>
+      <ul>
+        <% publisher[1].each do |publisherentry| %>
+          <li>
+            <b>
+              <% case publisherentry[0] %>
+              <% when 'jtitle' %>
+                Title
+              <% when 'issn' %>
+                ISSN
+              <% when 'zetocpub' %>
+                Publisher Name (ZETOC)
+              <% when 'romeopub' %>
+                Publisher Name (ROMEO)
+              <% else %>
+                <%= publisherentry[0] %>
+              <% end %>
+              :
+            </b>
+            <%= publisherentry[1] %></li>
         <% end %>
       </ul>
     </li>
   <% end %>
 </ul>
-
-<br/><br/>
-<%= @returndata[:sherpa_issn].dig("romeoapi","publishers") %><br/><br/>
-<%= @returndata[:sherpa_issn].dig("romeoapi") %><br/><br/>
