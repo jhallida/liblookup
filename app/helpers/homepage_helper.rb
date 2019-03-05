@@ -2,6 +2,9 @@ module HomepageHelper
 
   # recursively render JSON / XML data in HTML
   def show_data_for(jsondata)
+    if jsondata.nil?
+      return ''
+    end
     output = "<ul>"
     jsondata.each do |key, value|
       # make strings that seem to be URL's automatically cliackable

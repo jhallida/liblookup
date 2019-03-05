@@ -1,2 +1,10 @@
 <h3>SHERPA/ROMEO Lookup service for ISSN <%= params[:idfield] %></h3>
-<%= show_data_for(@returndata[:sherpa_issn].dig("romeoapi")) %>
+
+<h4>JOURNAL</h4>
+<%= show_data_for(@returndata[:sherpa_issn].dig("romeoapi","journals")) %>
+<hr/>
+<h4>PUBLISHER</h4>
+<%= show_data_for(@returndata[:sherpa_issn].dig("romeoapi","publishers")) %>
+<hr/>
+<h4>HEADER</h4>
+<%= show_data_for(@returndata[:sherpa_issn].dig("romeoapi","header")) %>

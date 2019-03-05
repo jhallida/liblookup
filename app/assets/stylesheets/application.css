@@ -17,6 +17,6 @@ body {
     text-align: center;
 }
 
-li {
+li, h4 {
     text-align: left;
 }
