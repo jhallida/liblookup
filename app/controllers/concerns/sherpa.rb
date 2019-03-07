@@ -3,19 +3,9 @@ module Sherpa
 
   include Network
 
-  # true if id is an issn
-  def matches_sherpa_issn?(id)
-    return id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
-  end
-
-  # true if id is an issn with no dash
-  def almost_matches_sherpa_issn?(id)
-    return id =~ /^[0-9]{7}[0-9xX]$/
-  end
-
   def sherpa_issn_hits_for(id)
-    unless matches_sherpa_issn?(id)
-      if almost_matches_sherpa_issn?(id)
+    unless matches_issn?(id)
+      if almost_matches_issn?(id)
         id = id[0..3] + "-" + id[4..7]
       else
         # doesnt match format of ISSN - ignore
@@ -39,8 +29,8 @@ module Sherpa
   end
 
   def sherpa_issn_json_for(id)
-    unless matches_sherpa_issn?(id)
-      if almost_matches_sherpa_issn?(id)
+    unless matches_issn?(id)
+      if almost_matches_issn?(id)
         id = id[0..3] + "-" + id[4..7]
       else
         # doesnt match format of ISSN - ignore
@@ -55,8 +45,8 @@ module Sherpa
   end
 
   def sherpa_issn_xml_for(id)
-    unless matches_sherpa_issn?(id)
-      if almost_matches_sherpa_issn?(id)
+    unless matches_issn?(id)
+      if almost_matches_issn?(id)
         id = id[0..3] + "-" + id[4..7]
       else
         # doesnt match format of ISSN - ignore

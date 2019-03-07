@@ -1,9 +1,9 @@
-module Scopus
+module Issntransfer
   extend ActiveSupport::Concern
 
   include Network
 
-  def scopus_issn_hits_for(id)
+  def issntransfer_hits_for(id)
     unless matches_issn?(id)
       if almost_matches_issn?(id)
         id = id[0..3] + "-" + id[4..7]
@@ -12,20 +12,21 @@ module Scopus
         return 0
       end
     end
-    url = Rails.configuration.x.scopus_issn_url + id
+    url = Rails.configuration.x.issn_journal_transfer + '?query=' + id
     data = go_get(url)
     if data.nil?
       return 0
     end
-    if (data.dig("serial-metadata-response","entry").blank?)
+    if (data.dig(0,"contents").blank?)
       # bogus ISSN
       return 0
     else
-      return data.dig("serial-metadata-response","entry").size
+      # I think this is only ever one
+      return 1
     end
   end
 
-  def scopus_issn_json_for(id)
+  def issntransfer_json_for(id)
     unless matches_issn?(id)
       if almost_matches_issn?(id)
         id = id[0..3] + "-" + id[4..7]
@@ -34,7 +35,7 @@ module Scopus
         return nil
       end
     end
-    url = Rails.configuration.x.scopus_issn_url + id
+    url = Rails.configuration.x.issn_journal_transfer + '?query=' + id
     data = go_get(url)
   end
 
