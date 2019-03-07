@@ -19,6 +19,7 @@ module Liblookup
 
     # connection URL for sherpa romeo
     config.x.sherpa_url = "http://www.sherpa.ac.uk/romeo/api29.php"
+    config.x.scopus_issn_url = "https://api.elsevier.com/content/serial/title/issn/"
 
   end
 end

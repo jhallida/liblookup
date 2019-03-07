@@ -21,6 +21,11 @@ Liblookup is a lookup service that searches for and retreives information from a
       <%= link_to 'Details', api: 'sherpa_issn', idfield: params[:idfield] %>
       <%= link_to 'Download XML', { controller: 'homepage', action: 'downloadaction', api: 'sherpa_issn', idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
+    <% if (numhit > 0) && (service=='Scopus ISSN') %>
+      <%= link_to 'Details', api: 'scopus_issn', idfield: params[:idfield] %>
+      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'scopus_issn', idfield: params[:idfield]}, target: "_blank" %>
+    <% end %>
+    <br/>
   <% end %>
 <% end %>
 
@@ -28,5 +33,7 @@ Liblookup is a lookup service that searches for and retreives information from a
   <% if @returndata[:sherpa_issn].present? %>
     <%= render "sherpa_issn" %>
   <% end %>
+  <% if @returndata[:scopus_issn].present? %>
+    <%= render "scopus_issn" %>
+  <% end %>
 <% end %>
-

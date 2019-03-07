@@ -8,7 +8,7 @@ module HomepageHelper
     output = "<ul>"
     jsondata.each do |key, value|
       # make strings that seem to be URL's automatically cliackable
-      if (key.downcase.end_with?("url"))
+      if (key.downcase.end_with?("url")) || (key.downcase.end_with?("href"))
         value = "<a href='" + value + "'>" + value + "</a>"
       end
       if value.is_a?(Hash)

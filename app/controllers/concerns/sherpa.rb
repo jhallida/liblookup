@@ -8,10 +8,19 @@ module Sherpa
     return id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
   end
 
+  # true if id is an issn with no dash
+  def almost_matches_sherpa_issn?(id)
+    return id =~ /^[0-9]{7}[0-9xX]$/
+  end
+
   def sherpa_issn_hits_for(id)
     unless matches_sherpa_issn?(id)
-      # doesnt match format of ISSN - ignore
-      return 0
+      if almost_matches_sherpa_issn?(id)
+        id = id[0..3] + "-" + id[4..7]
+      else
+        # doesnt match format of ISSN - ignore
+        return 0
+      end
     end
     url = Rails.configuration.x.sherpa_url + '?issn=' + id
     unless (Rails.configuration.x.sherpa_api_key.blank?)
@@ -31,8 +40,12 @@ module Sherpa
 
   def sherpa_issn_json_for(id)
     unless matches_sherpa_issn?(id)
-      # doesnt match format of ISSN - ignore
-      return nil
+      if almost_matches_sherpa_issn?(id)
+        id = id[0..3] + "-" + id[4..7]
+      else
+        # doesnt match format of ISSN - ignore
+        return nil
+      end
     end
     url = Rails.configuration.x.sherpa_url + '?issn=' + id
     unless (Rails.configuration.x.sherpa_api_key.blank?)
@@ -42,9 +55,13 @@ module Sherpa
   end
 
   def sherpa_issn_xml_for(id)
-    unless id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
-      # doesnt match format of ISSN - ignore
-      return nil
+    unless matches_sherpa_issn?(id)
+      if almost_matches_sherpa_issn?(id)
+        id = id[0..3] + "-" + id[4..7]
+      else
+        # doesnt match format of ISSN - ignore
+        return nil
+      end
     end
     url = Rails.configuration.x.sherpa_url + '?issn=' + id
     unless (Rails.configuration.x.sherpa_api_key.blank?)
