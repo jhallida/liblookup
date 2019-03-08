@@ -3,6 +3,7 @@ class HomepageController < ApplicationController
   include Network
   include Sherpa
   include Scopus
+  include Doaj
   include Issntransfer
 
   def index
@@ -18,6 +19,9 @@ class HomepageController < ApplicationController
         end
         if params[:api]=='issn_transfer'
           @returndata = {issn_transfer: issntransfer_json_for(params[:idfield])}
+        end
+        if params[:api]=='doaj_issn'
+          @returndata = {doaj_issn: doaj_issn_json_for(params[:idfield])}
         end
       end
     end
@@ -36,6 +40,10 @@ class HomepageController < ApplicationController
       jsondata = issntransfer_json_for(params[:idfield])
       send_data jsondata, :filename => "ISSN-transfer-data-for-" + params[:idfield] + '.json'
     end
+    if params[:api]=='doaj_issn'
+      jsondata = doaj_issn_json_for(params[:idfield])
+      send_data jsondata, :filename => "DOAJ-ISSN-data-for-" + params[:idfield] + '.json'
+    end
   end
 
   private
@@ -46,6 +54,7 @@ class HomepageController < ApplicationController
     hits["Sherpa ISSN"] = sherpa_issn_hits_for(id)
     hits["Scopus ISSN"] = scopus_issn_hits_for(id)
     hits["ISSN Transfer"] = issntransfer_hits_for(id)
+    hits["DOAJ ISSN"] = doaj_issn_hits_for(id)
     hits
   end
 

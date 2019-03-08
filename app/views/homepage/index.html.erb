@@ -29,6 +29,10 @@ Liblookup is a lookup service that searches for and retreives information from a
       <%= link_to 'Details', api: 'issn_transfer', idfield: params[:idfield] %>
       <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'issn_transfer', idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
+    <% if (numhit > 0) && (service=='DOAJ ISSN') %>
+      <%= link_to 'Details', api: 'doaj_issn', idfield: params[:idfield] %>
+      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'doaj_issn', idfield: params[:idfield]}, target: "_blank" %>
+    <% end %>
     <br/>
   <% end %>
 <% end %>
@@ -42,5 +46,8 @@ Liblookup is a lookup service that searches for and retreives information from a
   <% end %>
   <% if @returndata[:issn_transfer].present? %>
     <%= render "issn_transfer" %>
+  <% end %>
+  <% if @returndata[:doaj_issn].present? %>
+    <%= render "doaj_issn" %>
   <% end %>
 <% end %>

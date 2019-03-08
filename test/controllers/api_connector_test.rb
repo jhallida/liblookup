@@ -48,4 +48,19 @@ class ApiConnectorTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should connect to DOAJ with an ISSN journal search" do
+    url = Rails.configuration.x.doaj_journal + '0973-1075'
+    begin
+      data = HTTParty.get(url, timeout: Rails.configuration.x.network_time_out)
+    rescue Exception => e
+      assert false
+    end
+    data = data.parsed_response
+    if data["results"].present?
+      assert true
+    else
+      assert false
+    end
+  end
+
 end
