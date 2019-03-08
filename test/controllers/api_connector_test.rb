@@ -63,4 +63,23 @@ class ApiConnectorTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should connect to Google Books API and do an ISBN search" do
+    url = Rails.configuration.x.google_books + '?q=isbn:160941411X'
+    begin
+      data = HTTParty.get(url, timeout: Rails.configuration.x.network_time_out)
+    rescue Exception => e
+      assert false
+    end
+    data = data.parsed_response
+    if data.dig("totalItems").present?
+      if data.dig("totalItems").to_i > 0
+        assert true
+      else
+        assert false
+      end
+    else
+      assert false
+    end
+  end
+
 end

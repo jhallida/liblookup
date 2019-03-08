@@ -36,7 +36,7 @@ module Doaj
       end
     end
     url = Rails.configuration.x.doaj_journal + id
-    data = go_get(url)
+    return go_get(url)
   end
 
 end

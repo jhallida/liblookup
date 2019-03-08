@@ -5,6 +5,7 @@ class HomepageController < ApplicationController
   include Scopus
   include Doaj
   include Issntransfer
+  include Googlebooks
 
   def index
     if params[:idfield].present?
@@ -22,6 +23,9 @@ class HomepageController < ApplicationController
         end
         if params[:api]=='doaj_issn'
           @returndata = {doaj_issn: doaj_issn_json_for(params[:idfield])}
+        end
+        if params[:api]=='google_books_isbn'
+          @returndata = {google_books_isbn: google_books_isbn_json_for(params[:idfield])}
         end
       end
     end
@@ -44,6 +48,10 @@ class HomepageController < ApplicationController
       jsondata = doaj_issn_json_for(params[:idfield])
       send_data jsondata, :filename => "DOAJ-ISSN-data-for-" + params[:idfield] + '.json'
     end
+    if params[:api]=='google_books_isbn'
+      jsondata = google_books_isbn_json_for(params[:idfield])
+      send_data jsondata, :filename => "Google-Books-ISBN-data-for-" + params[:idfield] + '.json'
+    end
   end
 
   private
@@ -55,7 +63,26 @@ class HomepageController < ApplicationController
     hits["Scopus ISSN"] = scopus_issn_hits_for(id)
     hits["ISSN Transfer"] = issntransfer_hits_for(id)
     hits["DOAJ ISSN"] = doaj_issn_hits_for(id)
+    hits["GOOGLE BOOKS ISBN"] = google_books_isbn_hits_for(id)
     hits
+  end
+
+  # true if matches ISBN (must be stripped of dashes and spaces already)
+  def matches_isbn?(id)
+    if id =~ /^[0-9]{10}$/
+      return true
+    end
+    if id =~ /^[0-9]{13}$/
+      return true
+    end
+    return false
+  end
+
+  # remove spaces and dashes, in preparation for determining if a string is an isbn number
+  def prep_for_isbn_check(id)
+    id = id.strip
+    id = id.gsub("-","")
+    return id
   end
 
   # true if id is an issn "0234-567x"

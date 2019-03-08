@@ -35,7 +35,7 @@ module Scopus
       end
     end
     url = Rails.configuration.x.scopus_issn_url + id
-    data = go_get(url)
+    return go_get(url)
   end
 
 end

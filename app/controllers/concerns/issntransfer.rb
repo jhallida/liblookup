@@ -36,7 +36,7 @@ module Issntransfer
       end
     end
     url = Rails.configuration.x.issn_journal_transfer + '?query=' + id
-    data = go_get(url)
+    return go_get(url)
   end
 
 end
