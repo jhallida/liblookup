@@ -7,10 +7,8 @@ class HomepageController < ApplicationController
 
   def index
     if params[:idfield].present?
-      if params[:api].blank?
-        # we are looking for number of hits only
-        @numhitsdata = get_hits_for_id(params[:idfield])
-      else
+      @numhitsdata = get_hits_for_id(params[:idfield])
+      unless params[:api].blank?
         # we are returning data of some sort - figure out what it is and show it
         if params[:api]=='sherpa_issn'
           @returndata = {sherpa_issn: sherpa_issn_json_for(params[:idfield])}
