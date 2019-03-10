@@ -23,6 +23,7 @@ module Liblookup
     config.x.issn_journal_transfer = "https://journaltransfer.issn.org/api"
     config.x.doaj_journal = "https://doaj.org/api/v1/search/journals/"
     config.x.google_books = "https://www.googleapis.com/books/v1/volumes"
+    config.x.crossref_journals = "https://api.crossref.org/journals/"
 
   end
 end

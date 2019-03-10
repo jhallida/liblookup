@@ -33,6 +33,10 @@ Liblookup is a lookup service that searches for and retreives information from a
       <%= link_to 'Details', api: 'doaj_issn', idfield: params[:idfield] %>
       <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'doaj_issn', idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
+    <% if (numhit > 0) && (service=='CROSSREF ISSN') %>
+      <%= link_to 'Details', api: 'crossref_issn', idfield: params[:idfield] %>
+      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'crossref_issn', idfield: params[:idfield]}, target: "_blank" %>
+    <% end %>
     <% if (numhit > 0) && (service=='GOOGLE BOOKS ISBN') %>
       <%= link_to 'Details', api: 'google_books_isbn', idfield: params[:idfield] %>
       <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'google_books_isbn', idfield: params[:idfield]}, target: "_blank" %>
@@ -53,6 +57,9 @@ Liblookup is a lookup service that searches for and retreives information from a
   <% end %>
   <% if @returndata[:doaj_issn].present? %>
     <%= render "doaj_issn" %>
+  <% end %>
+  <% if @returndata[:crossref_issn].present? %>
+    <%= render "crossref_issn" %>
   <% end %>
   <% if @returndata[:google_books_isbn].present? %>
     <%= render "google_books_isbn" %>
