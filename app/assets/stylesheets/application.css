@@ -20,3 +20,7 @@ body {
 li, h4 {
     text-align: left;
 }
+
+pre {
+    text-align:left;
+}
