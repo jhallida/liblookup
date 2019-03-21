@@ -17,20 +17,26 @@ Liblookup is a lookup service that searches for and retreives information from a
   ID SEARCH FOR <b><%= params[:idfield] %></b>:<br/><br/>
   <% @returndata.each do |service, data| %>
     <%= service %> returns <%= data["hits"] %> hit<% if data["hits"] != 1 %>s<% end %>
-    <% if (data["hits"] > 0) && (service=='sherpa_issn') %>
-      <%= link_to 'Details', api: 'sherpa_issn', idfield: params[:idfield] %>
-      <%= link_to 'Download XML', { controller: 'homepage', action: 'downloadaction', api: 'sherpa_issn', idfield: params[:idfield]}, target: "_blank" %>
+    <% if (data["hits"] > 0) %>
+      <button onclick="turn_on('<%= service %>');">Show</button>
+      <%= link_to 'Download', { controller: 'homepage', action: 'downloadaction', api: service, idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
     <br/>
   <% end %>
   <% @returndata.each do |service, data| %>
-    <h2><%= service %></h2>
-    <% unless data["data"].nil? %>
-      <pre>
-        <%= show_data_for(data["data"]) %>
-      </pre>
-    <% end %>
+    <div style="display:none" id="<%= service %>"><%= render partial: service, locals: {data: data}  %></div>
     <br/>
   <% end %>
 <% end %>
+
+<script>
+    function turn_on(id) {
+        <% Rails.configuration.x.service.each do |service| %>
+          var remove = document.getElementById('<%= service %>');
+          remove.style.display = 'none';
+        <% end %>
+        var e = document.getElementById(id);
+        e.style.display = 'block';
+    }
+</script>
 
