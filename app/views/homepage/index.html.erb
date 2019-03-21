@@ -13,55 +13,24 @@ Liblookup is a lookup service that searches for and retreives information from a
 <% end %>
 <br/><br/>
 
-<% if params[:idfield].present? && @numhitsdata.present? %>
+<% if params[:idfield].present? && @returndata.present? %>
   ID SEARCH FOR <b><%= params[:idfield] %></b>:<br/><br/>
-  <% @numhitsdata.each do |service, numhit| %>
-    <%= service %> returns <%= numhit %> hit<% if numhit != 1 %>s<% end %>
-    <% if (numhit > 0) && (service=='Sherpa ISSN') %>
+  <% @returndata.each do |service, data| %>
+    <%= service %> returns <%= data["hits"] %> hit<% if data["hits"] != 1 %>s<% end %>
+    <% if (data["hits"] > 0) && (service=='sherpa_issn') %>
       <%= link_to 'Details', api: 'sherpa_issn', idfield: params[:idfield] %>
       <%= link_to 'Download XML', { controller: 'homepage', action: 'downloadaction', api: 'sherpa_issn', idfield: params[:idfield]}, target: "_blank" %>
     <% end %>
-    <% if (numhit > 0) && (service=='Scopus ISSN') %>
-      <%= link_to 'Details', api: 'scopus_issn', idfield: params[:idfield] %>
-      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'scopus_issn', idfield: params[:idfield]}, target: "_blank" %>
-    <% end %>
-    <% if (numhit > 0) && (service=='ISSN Transfer') %>
-      <%= link_to 'Details', api: 'issn_transfer', idfield: params[:idfield] %>
-      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'issn_transfer', idfield: params[:idfield]}, target: "_blank" %>
-    <% end %>
-    <% if (numhit > 0) && (service=='DOAJ ISSN') %>
-      <%= link_to 'Details', api: 'doaj_issn', idfield: params[:idfield] %>
-      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'doaj_issn', idfield: params[:idfield]}, target: "_blank" %>
-    <% end %>
-    <% if (numhit > 0) && (service=='CROSSREF ISSN') %>
-      <%= link_to 'Details', api: 'crossref_issn', idfield: params[:idfield] %>
-      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'crossref_issn', idfield: params[:idfield]}, target: "_blank" %>
-    <% end %>
-    <% if (numhit > 0) && (service=='GOOGLE BOOKS ISBN') %>
-      <%= link_to 'Details', api: 'google_books_isbn', idfield: params[:idfield] %>
-      <%= link_to 'Download JSON', { controller: 'homepage', action: 'downloadaction', api: 'google_books_isbn', idfield: params[:idfield]}, target: "_blank" %>
+    <br/>
+  <% end %>
+  <% @returndata.each do |service, data| %>
+    <h2><%= service %></h2>
+    <% unless data["data"].nil? %>
+      <pre>
+        <%= show_data_for(data["data"]) %>
+      </pre>
     <% end %>
     <br/>
   <% end %>
 <% end %>
 
-<% if @returndata.present? %>
-  <% if @returndata[:sherpa_issn].present? %>
-    <%= render "sherpa_issn" %>
-  <% end %>
-  <% if @returndata[:scopus_issn].present? %>
-    <%= render "scopus_issn" %>
-  <% end %>
-  <% if @returndata[:issn_transfer].present? %>
-    <%= render "issn_transfer" %>
-  <% end %>
-  <% if @returndata[:doaj_issn].present? %>
-    <%= render "doaj_issn" %>
-  <% end %>
-  <% if @returndata[:crossref_issn].present? %>
-    <%= render "crossref_issn" %>
-  <% end %>
-  <% if @returndata[:google_books_isbn].present? %>
-    <%= render "google_books_isbn" %>
-  <% end %>
-<% end %>

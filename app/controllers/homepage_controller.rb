@@ -10,6 +10,47 @@ class HomepageController < ApplicationController
 
   def index
     if params[:idfield].present?
+      get_data_for_id(params[:idfield])
+    else
+      @returndata = nil
+    end
+  end
+
+  # collect all the data from the APIs that match the query
+  def get_data_for_id(id)
+    @returndata = Hash.new
+    issn = fix_issn(id)
+    unless issn.nil?
+      @returndata["sherpa_issn"] = get_sherpa_issn_for(params[:idfield])
+    end
+  end
+
+  # given an id, return the id if it's an issn (formatted correctly), or return nil if not
+  def fix_issn(id)
+    if matches_issn?(id)
+      return id
+    end
+    if almost_matches_issn?(id)
+      id = id[0..3] + "-" + id[4..7]
+      return id
+    end
+    return nil
+  end
+
+  # true if id is an issn "0234-567x"
+  def matches_issn?(id)
+    return id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
+  end
+
+  # true if id is an issn with no dash "0234567x"
+  def almost_matches_issn?(id)
+    return id =~ /^[0-9]{7}[0-9xX]$/
+  end
+
+  ##############
+
+  def index2
+    if params[:idfield].present?
       @numhitsdata = get_hits_for_id(params[:idfield])
       unless params[:api].blank?
         # we are returning data of some sort - figure out what it is and show it
@@ -92,16 +133,6 @@ class HomepageController < ApplicationController
     id = id.strip
     id = id.gsub("-","")
     return id
-  end
-
-  # true if id is an issn "0234-567x"
-  def matches_issn?(id)
-    return id =~ /^[0-9]{4}-[0-9]{3}[0-9xX]$/
-  end
-
-  # true if id is an issn with no dash "0234567x"
-  def almost_matches_issn?(id)
-    return id =~ /^[0-9]{7}[0-9xX]$/
   end
 
 end

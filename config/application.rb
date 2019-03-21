@@ -17,7 +17,6 @@ module Liblookup
     # key for SHERPA API - optional
     # config.x.sherpa_api_key = "API_KEY_GOES_HERE"
 
-    # connection URL for sherpa romeo
     config.x.sherpa_url = "http://www.sherpa.ac.uk/romeo/api29.php"
     config.x.scopus_issn_url = "https://api.elsevier.com/content/serial/title/issn/"
     config.x.issn_journal_transfer = "https://journaltransfer.issn.org/api"
