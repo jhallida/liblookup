@@ -24,7 +24,7 @@ module Liblookup
     config.x.google_books = "https://www.googleapis.com/books/v1/volumes"
     config.x.crossref_journals = "https://api.crossref.org/journals/"
 
-    config.x.service = [ 'sherpa_issn', 'crossref_issn' ]
+    config.x.service = ['crossref_issn','sherpa_issn','scopus_issn','issn_transfer','doaj_issn','google_books_isbn']
 
   end
 end

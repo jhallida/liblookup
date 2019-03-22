@@ -12,6 +12,7 @@ module Sherpa
     data = go_get(url)
     if data.nil?
       x["hits"] = 0
+      return x
     end
     if (data["romeoapi"]["journals"].nil?)
       # bogus ISSN

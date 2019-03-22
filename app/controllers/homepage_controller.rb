@@ -23,6 +23,13 @@ class HomepageController < ApplicationController
     unless issn.nil?
       @returndata["sherpa_issn"] = get_sherpa_issn_for(params[:idfield])
       @returndata["crossref_issn"] = get_crossref_issn_for(params[:idfield])
+      @returndata["scopus_issn"] = get_scopus_issn_for(params[:idfield])
+      @returndata["issn_transfer"] = get_issn_transfer_for(params[:idfield])
+      @returndata["doaj_issn"] = get_doaj_issn_for(params[:idfield])
+    end
+    isbn = prep_for_isbn_check(id)
+    if matches_isbn?(isbn)
+      @returndata["google_books_isbn"] = get_google_books_isbn_for(params[:idfield])
     end
   end
 

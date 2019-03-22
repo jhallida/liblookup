@@ -7,8 +7,9 @@ module Crossref
     url = Rails.configuration.x.crossref_journals + id
     x = Hash.new
     data = go_get(url)
-    if data.nil?
+    if data.nil? || data.class==String
       x["hits"] = 0
+      return x
     end
     unless data.dig("status").present?
       # bogus ISSN

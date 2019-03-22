@@ -24,7 +24,9 @@ Liblookup is a lookup service that searches for and retreives information from a
     <br/>
   <% end %>
   <% @returndata.each do |service, data| %>
-    <div style="display:none" id="<%= service %>"><%= render partial: service, locals: {data: data}  %></div>
+    <% unless data["data"].nil? %>
+      <div style="display:none" id="<%= service %>"><%= render partial: service, locals: {data: data}  %></div>
+    <% end %>
     <br/>
   <% end %>
 <% end %>
@@ -33,7 +35,9 @@ Liblookup is a lookup service that searches for and retreives information from a
     function turn_on(id) {
         <% Rails.configuration.x.service.each do |service| %>
           var remove = document.getElementById('<%= service %>');
-          remove.style.display = 'none';
+          if (remove !== null) {
+              remove.style.display = 'none';
+          }
         <% end %>
         var e = document.getElementById(id);
         e.style.display = 'block';
