@@ -7,6 +7,7 @@ class HomepageController < ApplicationController
   include Issntransfer
   include Googlebooks
   include Crossref
+  include Openlibrary
 
   def index
     if params[:idfield].present?
@@ -30,7 +31,10 @@ class HomepageController < ApplicationController
     isbn = prep_for_isbn_check(id)
     if matches_isbn?(isbn)
       @returndata["google_books_isbn"] = get_google_books_isbn_for(params[:idfield])
+      @returndata["openlibrary_isbn"] = get_openlibrary_isbn_for(params[:idfield])
     end
+    # no reliable test for lccn, so we'll just try everything
+    @returndata["openlibrary_lccn"] = get_openlibrary_lccn_for(params[:idfield])
   end
 
   # given an id, return the id if it's an issn (formatted correctly), or return nil if not
@@ -98,6 +102,14 @@ class HomepageController < ApplicationController
     if params[:api]=='google_books_isbn'
       jsondata = google_books_isbn_json_for(params[:idfield])
       send_data jsondata, :filename => "Google-Books-ISBN-data-for-" + params[:idfield] + '.json'
+    end
+    if params[:api]=='openlibrary_isbn'
+      jsondata = openlibrary_isbn_json_for(params[:idfield])
+      send_data jsondata, :filename => "Open-Library-ISBN-data-for-" + params[:idfield] + '.json'
+    end
+    if params[:api]=='openlibrary_lccn'
+      jsondata = openlibrary_lccn_json_for(params[:idfield])
+      send_data jsondata, :filename => "Open-Library-LCCN-data-for-" + params[:idfield] + '.json'
     end
   end
 

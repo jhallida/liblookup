@@ -97,4 +97,19 @@ class ApiConnectorTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should connect to Open Library API and do an ISBN search" do
+    url = Rails.configuration.x.open_library + 'ISBN:9780980200447'
+    begin
+      data = HTTParty.get(url, timeout: Rails.configuration.x.network_time_out)
+    rescue Exception => e
+      assert false
+    end
+    data = data.parsed_response
+    if data.empty?
+      assert false
+    else
+      assert true
+    end
+  end
+
 end

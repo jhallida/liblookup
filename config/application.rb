@@ -23,8 +23,9 @@ module Liblookup
     config.x.doaj_journal = "https://doaj.org/api/v1/search/journals/"
     config.x.google_books = "https://www.googleapis.com/books/v1/volumes"
     config.x.crossref_journals = "https://api.crossref.org/journals/"
+    config.x.open_library = "https://openlibrary.org/api/books?jscmd=data&format=json&bibkeys="
 
-    config.x.service = ['crossref_issn','sherpa_issn','scopus_issn','issn_transfer','doaj_issn','google_books_isbn']
+    config.x.service = ['crossref_issn','sherpa_issn','scopus_issn','issn_transfer','doaj_issn','google_books_isbn', 'openlibrary_isbn', 'openlibrary_lccn']
 
   end
 end
