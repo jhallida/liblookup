@@ -78,6 +78,25 @@ class ApiConnectorTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "should connect to CrossRef and do a book ISBN search" do
+    url = Rails.configuration.x.crossref_books + 'isbn:9781780648903'
+    begin
+      data = HTTParty.get(url, timeout: Rails.configuration.x.network_time_out)
+    rescue Exception => e
+      assert false
+    end
+    data = data.parsed_response
+    if data.dig("message","total-results").present?
+      if data.dig("message","total-results") > 0
+        assert true
+      else
+        assert false
+      end
+    else
+      assert false
+    end
+  end
+
   test "should connect to Google Books API and do an ISBN search" do
     url = Rails.configuration.x.google_books + '?q=isbn:160941411X'
     begin

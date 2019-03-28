@@ -15,13 +15,20 @@ Liblookup is a lookup service that searches for and retreives information from a
 
 <% if params[:idfield].present? && @returndata.present? %>
   ID SEARCH FOR <b><%= params[:idfield] %></b>:<br/><br/>
+  <% foundone = false %>
   <% @returndata.each do |service, data| %>
-    <%= service %> returns <%= data["hits"] %> hit<% if data["hits"] != 1 %>s<% end %>
-    <% if (data["hits"] > 0) %>
-      <button onclick="turn_on('<%= service %>');">Show</button>
-      <%= link_to 'Download', { controller: 'homepage', action: 'downloadaction', api: service, idfield: params[:idfield]}, target: "_blank" %>
+    <% if data["hits"] > 0 %>
+      <% foundone = true %>
+      <%= service %> returns <%= data["hits"] %> hit<% if data["hits"] != 1 %>s<% end %>
+      <% if (data["hits"] > 0) %>
+        <button onclick="turn_on('<%= service %>');">Show</button>
+        <%= link_to 'Download', { controller: 'homepage', action: 'downloadaction', api: service, idfield: params[:idfield]}, target: "_blank" %>
+      <% end %>
+      <br/>
     <% end %>
-    <br/>
+  <% end %>
+  <% unless foundone %>
+    NO RESULTS FOUND
   <% end %>
   <% @returndata.each do |service, data| %>
     <% unless data["data"].nil? %>

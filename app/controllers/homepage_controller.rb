@@ -30,6 +30,7 @@ class HomepageController < ApplicationController
     end
     isbn = prep_for_isbn_check(id)
     if matches_isbn?(isbn)
+      @returndata["crossref_isbn"] = get_crossref_isbn_for(params[:idfield])
       @returndata["google_books_isbn"] = get_google_books_isbn_for(params[:idfield])
       @returndata["openlibrary_isbn"] = get_openlibrary_isbn_for(params[:idfield])
     end
@@ -98,6 +99,10 @@ class HomepageController < ApplicationController
     if params[:api]=='crossref_issn'
       jsondata = crossref_issn_json_for(params[:idfield])
       send_data jsondata, :filename => "CrossRef-ISSN-data-for-" + params[:idfield] + '.json'
+    end
+    if params[:api]=='crossref_isbn'
+      jsondata = crossref_isbn_json_for(params[:idfield])
+      send_data jsondata, :filename => "CrossRef-ISBN-data-for-" + params[:idfield] + '.json'
     end
     if params[:api]=='google_books_isbn'
       jsondata = google_books_isbn_json_for(params[:idfield])
